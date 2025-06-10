@@ -1,0 +1,64 @@
+services:
+  # Base de données PostgreSQL avec PostGIS
+  db:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_DB: wildlife_tracker
+      POSTGRES_USER: wildlife_user
+      POSTGRES_PASSWORD: wildlife_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - wildlife_network
+    restart: unless-stopped
+
+  # API Backend FastAPI
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://wildlife_user:wildlife_password@db:5432/wildlife_tracker
+      SECRET_KEY: your-secret-key-change-in-production
+      CORS_ORIGINS: http://localhost:3000
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - uploaded_files:/app/uploads
+    networks:
+      - wildlife_network
+    restart: unless-stopped
+
+  # Frontend React
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - wildlife_network
+    restart: unless-stopped
+
+  # Redis pour la mise en cache (optionnel)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - wildlife_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploaded_files:
+
+networks:
+  wildlife_network:
+    driver: bridge

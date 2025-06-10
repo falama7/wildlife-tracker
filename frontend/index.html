@@ -1,0 +1,17 @@
+echo "📝 Création de index.html..."
+cat > frontend/public/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#10b981" />
+    <meta name="description" content="Système de suivi des espèces dans les parcs nationaux" />
+    <title>Wildlife Tracker - Suivi des Espèces</title>
+  </head>
+  <body>
+    <noscript>Vous devez activer JavaScript pour utiliser cette application.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+EOF
