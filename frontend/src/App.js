@@ -1,9 +1,5 @@
-// frontend/src/App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
-
-// Composants principaux
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import SpeciesManagement from './pages/SpeciesManagement';
@@ -12,31 +8,15 @@ import DataEntry from './pages/DataEntry';
 import Login from './pages/Login';
 import LoadingSpinner from './components/LoadingSpinner';
 
-// Services
-import { authService } from './services/authService';
-
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Vérifier si l'utilisateur est connecté
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const userData = await authService.getCurrentUser();
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error('Erreur d\'authentification:', error);
-        localStorage.removeItem('token');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
+    // Simulation de vérification auth
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, []);
 
   const handleLogin = (userData) => {
@@ -44,7 +24,6 @@ function App() {
   };
 
   const handleLogout = () => {
-    authService.logout();
     setUser(null);
   };
 
@@ -52,12 +31,19 @@ function App() {
     return <LoadingSpinner />;
   }
 
+  const mainStyle = {
+    marginLeft: user ? '260px' : '0',
+    padding: user ? '20px' : '0',
+    flex: 1,
+    overflowX: 'hidden'
+  };
+
   return (
     <Router>
-      <div className="App">
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         {user && <Navbar user={user} onLogout={handleLogout} />}
         
-        <main className={user ? "main-content" : "main-content-full"}>
+        <main style={mainStyle}>
           <Routes>
             {!user ? (
               <>

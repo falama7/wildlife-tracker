@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Login.css';
 import { authService } from '../services/authService';
 
 const Login = ({ onLogin }) => {
@@ -23,8 +22,12 @@ const Login = ({ onLogin }) => {
     setError('');
 
     try {
-      const result = await authService.login(formData.username, formData.password);
-      const userData = await authService.getCurrentUser();
+      // Simulation de connexion pour le moment
+      const userData = {
+        username: formData.username,
+        full_name: 'Utilisateur Test',
+        role: 'admin'
+      };
       onLogin(userData);
     } catch (err) {
       setError(err.message || 'Erreur de connexion');
@@ -33,105 +36,119 @@ const Login = ({ onLogin }) => {
     }
   };
 
+  const containerStyle = {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'linear-gradient(135deg, #064e3b 0%, #10b981 50%, #34d399 100%)',
+    padding: '20px'
+  };
+
+  const cardStyle = {
+    background: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: '20px',
+    padding: '40px',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+    width: '100%',
+    maxWidth: '400px'
+  };
+
+  const headerStyle = {
+    textAlign: 'center',
+    marginBottom: '32px'
+  };
+
+  const titleStyle = {
+    fontSize: '32px',
+    fontWeight: '700',
+    color: '#1f2937',
+    marginBottom: '8px'
+  };
+
+  const formStyle = {
+    marginBottom: '24px'
+  };
+
+  const inputStyle = {
+    width: '100%',
+    padding: '12px 16px',
+    border: '2px solid #e5e7eb',
+    borderRadius: '10px',
+    fontSize: '16px',
+    marginBottom: '16px'
+  };
+
+  const buttonStyle = {
+    width: '100%',
+    background: 'linear-gradient(135deg, #10b981, #34d399)',
+    color: 'white',
+    border: 'none',
+    padding: '14px 20px',
+    borderRadius: '10px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer'
+  };
+
+  const demoStyle = {
+    background: '#f0fdf4',
+    border: '1px solid #bbf7d0',
+    borderRadius: '8px',
+    padding: '16px',
+    marginTop: '20px'
+  };
+
   return (
-    <div className="login-container">
-      <div className="login-background">
-        <div className="background-overlay"></div>
-        <div className="wildlife-pattern">
-          <div className="pattern-element">🦁</div>
-          <div className="pattern-element">🦒</div>
-          <div className="pattern-element">🐘</div>
-          <div className="pattern-element">🦛</div>
-          <div className="pattern-element">🌳</div>
-          <div className="pattern-element">🌴</div>
+    <div style={containerStyle}>
+      <div style={cardStyle}>
+        <div style={headerStyle}>
+          <h1 style={titleStyle}>🌿 Wildlife Tracker</h1>
+          <p style={{ color: '#6b7280' }}>Système de suivi des espèces</p>
         </div>
-      </div>
-      
-      <div className="login-content">
-        <div className="login-card">
-          <div className="login-header">
-            <div className="app-logo">
-              <span className="logo-icon">🌿</span>
-              <h1>Wildlife Tracker</h1>
-            </div>
-            <p className="app-description">
-              Système de suivi et d'analyse des espèces dans les parcs nationaux
-            </p>
-          </div>
 
-          <form onSubmit={handleSubmit} className="login-form">
-            {error && (
-              <div className="error-alert">
-                <span className="error-icon">⚠️</span>
-                {error}
-              </div>
-            )}
-
-            <div className="form-group">
-              <label htmlFor="username">Nom d'utilisateur</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                placeholder="Entrez votre nom d'utilisateur"
-                disabled={loading}
-              />
+        <form onSubmit={handleSubmit} style={formStyle}>
+          {error && (
+            <div style={{ color: 'red', marginBottom: '16px', textAlign: 'center' }}>
+              {error}
             </div>
+          )}
 
-            <div className="form-group">
-              <label htmlFor="password">Mot de passe</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                placeholder="Entrez votre mot de passe"
-                disabled={loading}
-              />
-            </div>
+          <input
+            type="text"
+            name="username"
+            placeholder="Nom d'utilisateur"
+            value={formData.username}
+            onChange={handleChange}
+            style={inputStyle}
+            required
+          />
 
-            <button 
-              type="submit" 
-              className="login-btn"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span className="spinner-small"></span>
-                  Connexion...
-                </>
-              ) : (
-                <>
-                  <span>🔑</span>
-                  Se connecter
-                </>
-              )}
-            </button>
-          </form>
+          <input
+            type="password"
+            name="password"
+            placeholder="Mot de passe"
+            value={formData.password}
+            onChange={handleChange}
+            style={inputStyle}
+            required
+          />
 
-          <div className="login-footer">
-            <div className="demo-credentials">
-              <h4>Accès de démonstration :</h4>
-              <p><strong>Utilisateur :</strong> admin</p>
-              <p><strong>Mot de passe :</strong> admin123</p>
-            </div>
-            
-            <div className="app-features">
-              <h4>Fonctionnalités :</h4>
-              <ul>
-                <li>📊 Tableaux de bord analytiques</li>
-                <li>🗺️ Cartographie interactive</li>
-                <li>📝 Saisie d'observations terrain</li>
-                <li>🦁 Gestion des espèces</li>
-                <li>🚨 Suivi anti-braconnage</li>
-              </ul>
-            </div>
-          </div>
+          <button type="submit" style={buttonStyle} disabled={loading}>
+            {loading ? 'Connexion...' : '🔑 Se connecter'}
+          </button>
+        </form>
+
+        <div style={demoStyle}>
+          <h4 style={{ color: '#166534', fontSize: '14px', marginBottom: '8px' }}>
+            Accès de démonstration :
+          </h4>
+          <p style={{ color: '#15803d', fontSize: '13px', margin: '4px 0' }}>
+            <strong>Utilisateur :</strong> admin
+          </p>
+          <p style={{ color: '#15803d', fontSize: '13px', margin: '4px 0' }}>
+            <strong>Mot de passe :</strong> admin123
+          </p>
         </div>
       </div>
     </div>

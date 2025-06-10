@@ -14,70 +14,9 @@ body {
   color: #334155;
 }
 
-.App {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  margin-left: 260px;
-  padding: 20px;
-  flex: 1;
-  overflow-x: hidden;
-}
-
-.main-content-full {
-  padding: 0;
-  flex: 1;
-}
-
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
     padding: 10px;
   }
-}
-
-/* ===== COMPOSANTS GLOBAUX ===== */
-
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-.spinner {
-  border: 4px solid #f3f4f6;
-  border-top: 4px solid #10b981;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.error-message {
-  background-color: #fee2e2;
-  border: 1px solid #fca5a5;
-  color: #dc2626;
-  padding: 16px;
-  border-radius: 8px;
-  margin: 16px 0;
-  text-align: center;
-}
-
-.success-message {
-  background-color: #dcfce7;
-  border: 1px solid #86efac;
-  color: #166534;
-  padding: 16px;
-  border-radius: 8px;
-  margin: 16px 0;
-  text-align: center;
 }
